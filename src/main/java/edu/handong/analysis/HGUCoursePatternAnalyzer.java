@@ -7,8 +7,8 @@ import java.util.TreeMap;
 
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
-import edu.handong.analysise.utils.NotEnoughArgumentException;
-import edu.handong.analysise.utils.Utils;
+import edu.handong.analysis.utils.NotEnoughArgumentException;
+import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
 
@@ -33,6 +33,7 @@ public class HGUCoursePatternAnalyzer {
 		String dataPath = args[0]; // csv file to be analyzed
 		String resultPath = args[1]; // the file path where the results are saved.
 		ArrayList<String> lines = Utils.getLines(dataPath, true);
+		//System.out.println(lines);
 		
 		students = loadStudentCourseRecords(lines);
 		
@@ -55,8 +56,30 @@ public class HGUCoursePatternAnalyzer {
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
 		
 		// TODO: Implement this method
+		HashMap<String,Student> resultstudentinfo = new HashMap<String,Student>();
+		//ArrayList<Student> makestudent= new ArrayList<Student>();
+		//ArrayList<Course> makeCourse = new ArrayList<Course>();
 		
-		return null; // do not forget to return a proper variable.
+		for(String studentinfo: lines) {
+			String[] array = studentinfo.split(",");
+			System.out.println(studentinfo);
+			Course mycourse =  new Course(studentinfo);
+			
+			
+			//System.out.println(mycourse.studentId);
+			if(resultstudentinfo.containsKey(array[0])) {
+				resultstudentinfo.get(array[0]).addCourse(mycourse);
+			}
+			else {
+				Student mystudent = new Student(array[0]);
+				mystudent.addCourse(mycourse);
+				resultstudentinfo.put(array[0],mystudent);
+				
+			}
+				
+		}
+		
+		return resultstudentinfo; // do not forget to return a proper variable.
 	}
 
 	/**
