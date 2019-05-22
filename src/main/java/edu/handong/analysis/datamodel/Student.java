@@ -26,23 +26,18 @@ public class Student {
 	}
 	
 	public int getNumCourseInNthSementer(int semester) {
-//		for(int i:seme)
-//		return 0;
-		//public static <K, V> K getKey(Map<K, V> map, V value) 
-		String array[];
+
+		String[] array = new String[2];
 		
         for (String key : semestersByYearAndSememster.keySet()) {
             if (Integer.toString(semester).equals(semestersByYearAndSememster.get(key))) {
             	array = key.split("-");
             }
-//            else {
-//            	array[0]="a";
-//            	array[1]="a";
-//            }
+
         }
         int count=0;
         for(Course course:coursesTaken) {
-        	if((course.semesterCourseTaken == Integer.parseInt(array[0]))&&(course.yearTaken == Integer.parseInt(array[1]))){
+        	if((course.semesterCourseTaken == Integer.parseInt(array[0].trim()))&&(course.yearTaken == Integer.parseInt(array[1].trim()))){
         	count++;	
         	}
         }

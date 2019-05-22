@@ -1,7 +1,7 @@
 package edu.handong.analysis.datamodel;
 
 public class Course {
-	public String studentId;
+	private String studentId;
 	private String yearMonthGraduated;
 	private String firstMajor;
 	private String secondMajor;
