@@ -106,7 +106,7 @@ public class HGUCoursePatternAnalyzer {
 			int numOfsemester = newStudent.getSemestersByYearAndSemester().size();
 			
 			for(int i=0; i<numOfsemester;i++) {
-				String laststring =  laststudent + ","+ numOfsemester +","+ i+","+newStudent.getNumCourseInNthSementer(i);
+				String laststring =  laststudent + ","+ numOfsemester +","+ i+","+ newStudent.getNumCourseInNthSementer(i+1);
 				result.add(laststudent);
 			}
 		}
