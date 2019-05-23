@@ -33,7 +33,7 @@ public class Utils {
 	        }
 	        br.close();
 		} catch (FileNotFoundException e) {
-			System.out.println ("Error opening the file " + file);
+			System.out.println ("The file path does not exist. Please check your CLI argument!");
 			System.exit (0);
 		} catch (IOException e) {
 			System.out.println ("IOException");
@@ -67,34 +67,40 @@ public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//taretFileName이 올바른 경로에, 존재하는 파일인지 확인해야함.
 		//그리고 lines에 있는 걸 file에 입력해야함.
 	
-	
-	
-//		 File file = new File(targetFileName);
-//	     FileWriter writer = null;
-//		try {
-//			 writer = new FileWriter(file, false);
-//			 for(String line:lines) {
-//	            writer.write(line);
-//	            writer.write("\n");
-//	            writer.flush();
-//			 }
-//			 System.out.println("done");
-//			 
-//		} catch(FileNotFoundException e) {
-//			System.out.println("No CLI argument Exception! Please put a file path. ");
-//			System.exit(0);
-//			
-//		} catch(IOException e) {
-//            e.printStackTrace();
-//            
-//        } try {
-//                if(writer != null) writer.close();
-//            } catch(IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-     }
+		 File file = new File(targetFileName);
+		 
+		 //File directory = new File(tmp.getParentFile().getAbsolutePath());
+		 //directory.mkdirs();
+		 
+		 if(!file.getParentFile().exists()){
+			// System.out.println("dd");
+			 file.getParentFile().mkdirs();
+		 }
+		 
+		 FileWriter writer = null;
+		 
+		 try {
+			 writer = new FileWriter(file, false);
+			 for(String line:lines) {
+	            writer.write(line);
+	            writer.write("\n");
+	            writer.flush();
+			 }
+			 System.out.println("done");
+			
+		} catch(IOException e) {
+            e.printStackTrace();
+            
+        } try {
+                if(writer != null) writer.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 }
+
 
 
 
