@@ -62,7 +62,7 @@ public class HGUCoursePatternAnalyzer {
 		
 		for(String studentinfo: lines) {
 			String[] array = studentinfo.split(",");
-			System.out.println(studentinfo);
+			//System.out.println(studentinfo);
 			Course mycourse =  new Course(studentinfo);
 			
 			
