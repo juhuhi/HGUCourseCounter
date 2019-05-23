@@ -116,9 +116,9 @@ public class HGUCoursePatternAnalyzer {
 //			for(int i=0; i<numOfsemester)
 //		}
 		
-		for(String line: result) {
-			System.out.println(line);
-		}
+//		for(String line: result) {
+//			System.out.println(line);
+//		}
 		
 		
 		return result; // do not forget to return a proper variable.
