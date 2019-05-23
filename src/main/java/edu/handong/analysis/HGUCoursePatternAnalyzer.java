@@ -105,9 +105,9 @@ public class HGUCoursePatternAnalyzer {
 			Student newStudent = sortedStudents.get(laststudent);
 			int numOfsemester = newStudent.getSemestersByYearAndSemester().size();
 			
-			for(int i=0; i<numOfsemester;i++) {
-				String laststring =  laststudent + ","+ numOfsemester +","+ i+","+ newStudent.getNumCourseInNthSementer(i+1);
-				result.add(laststudent);
+			for(int i=1; i<numOfsemester+1;i++) {
+				String laststring =  laststudent + ","+ numOfsemester +","+ i+","+ newStudent.getNumCourseInNthSementer(i);
+				result.add(laststring);
 			}
 		}
 		
@@ -115,6 +115,10 @@ public class HGUCoursePatternAnalyzer {
 //			int numOfsemester = entry.getValue().getSemestersByYearAndSemester().size();
 //			for(int i=0; i<numOfsemester)
 //		}
+		
+		for(String line: result) {
+			System.out.println(line);
+		}
 		
 		
 		return result; // do not forget to return a proper variable.

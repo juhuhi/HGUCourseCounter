@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.FileWriter;
+
+
+
 
 import edu.handong.analysis.datamodel.Student;
-import edu.handong.csee.java.example.TextFileOutputDemo;
+
 
 public class Utils {
 	public static ArrayList<String> getLines(String file,boolean removeHeader){
@@ -57,23 +61,37 @@ public class Utils {
 		
 	}
 
-	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
+
+
+public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		//taretFileName이 올바른 경로에, 존재하는 파일인지 확인해야함.
 		//그리고 lines에 있는 걸 file에 입력해야함.
-		
-		PrintWriter outputStream = null;
-		
+	
+		 File file = new File(targetFileName);
+	     FileWriter writer = null;
 		try {
-			outputStream = new PrintWriter(targetFileName);
+			 writer = new FileWriter(file, false);
+			 for(String line:lines) {
+	            writer.write(line);
+	            writer.write("\n");
+	            writer.flush();
+			 }
+			 System.out.println("done");
+			 
 		} catch(FileNotFoundException e) {
 			System.out.println("No CLI argument Exception! Please put a file path. ");
 			System.exit(0);
 			
-		} catch (NotEnoughArgumentException e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}
-		
-	}
-
+		} catch(IOException e) {
+            e.printStackTrace();
+            
+        } try {
+                if(writer != null) writer.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
 }
+
+
+

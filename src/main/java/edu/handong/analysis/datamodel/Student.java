@@ -41,10 +41,14 @@ public class Student {
 
         }
         int count=0;
-       // System.out.println(array[0]+"  , "+array[1]);
+        //System.out.println(array[0]+","+array[1]);
         for(Course course:coursesTaken) {
-        	if((course.semesterCourseTaken == Integer.parseInt(array[0].trim()))&&(course.yearTaken == Integer.parseInt(array[1].trim()))){
-        	count++;	
+        	if((Integer.toString(course.semesterCourseTaken).equals(array[1]))&&
+        			(Integer.toString(course.yearTaken).equals(array[0]))){
+        		//System.out.println("dd");
+        		
+        		
+        		count++;	
         	}
         }
         
