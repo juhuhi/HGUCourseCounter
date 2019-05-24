@@ -72,7 +72,7 @@ public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		 //File directory = new File(tmp.getParentFile().getAbsolutePath());
 		 //directory.mkdirs();
 		 
-		 if(!file.getParentFile().exists()){
+		 if(!(file.getParentFile()==null)&&!file.getParentFile().exists()){
 			// System.out.println("dd");
 			 file.getParentFile().mkdirs();
 		 }
