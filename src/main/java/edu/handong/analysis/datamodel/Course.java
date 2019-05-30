@@ -11,8 +11,7 @@ public class Course {
 	int yearTaken;
 	int semesterCourseTaken;
 	
-	public Course(String line){
-		String[] array = line.split(",");
+	public Course(String[] array){
 		studentId = array[0].trim();
 		yearMonthGraduated= array[1].trim();
 		firstMajor= array[2].trim();

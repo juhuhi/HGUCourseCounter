@@ -40,22 +40,7 @@ public class Utils {
 			System.exit (0);
 		}
         
-//		Scanner inputStream = null;
-//	
-//			try {
-//				inputStream = new Scanner(new File(file));
-//			}  catch (FileNotFoundException e) {
-//				System.out.println ("Error opening the file " + file);
-//				System.exit (0);
-//			}
-//			
-//			while (inputStream.hasNextLine()) {
-//				String flieline = inputStream.nextLine();
-//				System.out.println (line);
-//				System.out.println ("\n");
-//				line.add(flieline);
-//			}
-//			inputStream.close ();
+
 		return line;
 
 		
@@ -86,7 +71,7 @@ public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 	            writer.write("\n");
 	            writer.flush();
 			 }
-			 //System.out.println("done");
+			 System.out.println("done");
 			
 		} catch(IOException e) {
             e.printStackTrace();
