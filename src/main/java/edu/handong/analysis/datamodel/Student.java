@@ -28,32 +28,43 @@ public class Student {
 		return semestersByYearAndSememster;
 	}
 	
+	public ArrayList<Course> getcoursesTaken(){
+		return coursesTaken;
+	}
+	
+	
+	
 	public int getNumCourseInNthSementer(int semester) {
 
 		String[] array = new String[2];
-	//	System.out.println(semester);
         for(String key : semestersByYearAndSememster.keySet()) {
             if (Integer.toString(semester).equals(Integer.toString(semestersByYearAndSememster.get(key)))) {
             	array = key.split("-");
-//            	System.out.println(array[0]+"  , "+array[1]);
-//            	System.out.println("dd");
             }
 
         }
         int count=0;
-        //System.out.println(array[0]+","+array[1]);
+
         for(Course course:coursesTaken) {
         	if((Integer.toString(course.semesterCourseTaken).equals(array[1]))&&
         			(Integer.toString(course.yearTaken).equals(array[0]))){
-        		//System.out.println("dd");
-        		
-        		
         		count++;	
         	}
         }
         
         return count;
     }
+	
+	public int getfindSemester(int semester) {
+		String[] array = new String[2];
+        for(String key : semestersByYearAndSememster.keySet()) {
+            if (Integer.toString(semester).equals(Integer.toString(semestersByYearAndSememster.get(key)))) {
+            	array = key.split("-");
+            }
+
+        }
+		return Integer.parseInt(array[0]); 
+	}
 
 
 	

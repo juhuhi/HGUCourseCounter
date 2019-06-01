@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import edu.handong.analysis.datamodel.Course;
+import edu.handong.analysis.datamodel.Coursedate;
 import edu.handong.analysis.datamodel.Student;
 import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
@@ -23,6 +24,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.csv.CSVFormat;
@@ -32,6 +34,7 @@ import org.apache.commons.csv.CSVRecord;
 public class HGUCoursePatternAnalyzer {
 
 	private HashMap<String,Student> students;
+	private HashMap<String,Coursedate> courses;
 	String input;
 	String output;
 	String analysis;
@@ -61,7 +64,7 @@ public class HGUCoursePatternAnalyzer {
 		Options options = createOptions();
 		
 		if(parseOptions(options, args)){
-			if (help){
+			if (help||startyear==null||endyear==null||output==null){
 				printHelp(options);
 				return;
 			}
@@ -70,13 +73,17 @@ public class HGUCoursePatternAnalyzer {
 			try {
 				Reader reader = Files.newBufferedReader(Paths.get(input));
 			    CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-			    
+			    boolean check = false;
 				for (CSVRecord csvRecord : csvParser) {
 					String flieline[] = new String[9];
 					for(int i=0; i<9;i++) {
 						flieline[i] = csvRecord.get(i);
 					}
-					line.add(flieline);
+					if(check) {
+						line.add(flieline);
+					}
+		            check= true;
+
 				}			
 
 			} catch (FileNotFoundException e) {
@@ -88,10 +95,36 @@ public class HGUCoursePatternAnalyzer {
 			}
 			
 			students = loadStudentCourseRecord(line);
-			
-			// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
+			courses = loadCourseRecords(line);
 			Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
+	
+			
+			if(analysis.equals("1")) {
+
+				ArrayList<String> linesToBeSaved1 = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+				Utils.writeAFile(linesToBeSaved1, output);
+				
+				
+			}
+			// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
+			if(analysis.equals("2")) {
+				if(coursecode==null){
+					printHelp(options);
+					return;					
+				}
+
+				Map<String, Coursedate> sortedCourses = new TreeMap<String,Coursedate>(courses);
+				ArrayList<String> linesToBeSaved2 = countNumberOfExactCourses(sortedCourses,sortedStudents);
+				Utils.writeAFile(linesToBeSaved2, output);
+			}
+		 
+			
+			
+			
+			
+			
 		
+	
 //		String dataPath = args[0]; // csv file to be analyzed
 //		String resultPath = args[1]; // the file path where the results are saved.
 //		ArrayList<String> lines = Utils.getLines(dataPath, true);
@@ -137,31 +170,30 @@ public class HGUCoursePatternAnalyzer {
 		return resultstudentinfo;
 	}
 	
-//	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String>lines) {
-//		
-//		// TODO: Implement this method
-//		HashMap<String,Student> resultstudentinfo = new HashMap<String,Student>();
-//		
-//		for(String studentinfo: lines) {
-//			String[] array = studentinfo.split(",");
-//			Course mycourse =  new Course(studentinfo);
-//			
-//			
-//			//System.out.println(mycourse.studentId);
-//			if(resultstudentinfo.containsKey(array[0])) {
-//				resultstudentinfo.get(array[0]).addCourse(mycourse);
-//			}
-//			else {
-//				Student mystudent = new Student(array[0]);
-//				mystudent.addCourse(mycourse);
-//				resultstudentinfo.put(array[0],mystudent);
-//				
-//			}
-//				
-//		}
-//		
-//		return resultstudentinfo; // do not forget to return a proper variable.
-//	}
+	  private HashMap<String,Coursedate> loadCourseRecords(ArrayList<String[]> lines) {
+	      HashMap<String,Coursedate> resultcourseinfo = new HashMap<String,Coursedate>();
+	      
+	      for(String[] courseinfo: lines) {
+	         Course mycourse =  new Course(courseinfo);
+	         
+	         String date = courseinfo[7] +"-"+ courseinfo[8];
+	         
+	         //System.out.println(mycourse.studentId);
+	         if(resultcourseinfo.containsKey(date)) {
+	            resultcourseinfo.get(date).addCourse(mycourse);
+	         }
+	         else {
+	            Coursedate myCoursedate = new Coursedate(date);
+	            myCoursedate.addCourse(mycourse);
+	            resultcourseinfo.put(date,myCoursedate);
+	            
+	         }
+	            
+	      }
+	      
+	      return resultcourseinfo;
+	   }
+	
 
 	/**
 	 * This method generate the number of courses taken by a student in each semester. The result file look like this:
@@ -176,6 +208,7 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
+	  //a1일 경우
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
 		// TODO: Implement this method
@@ -187,8 +220,10 @@ public class HGUCoursePatternAnalyzer {
 			int numOfsemester = newStudent.getSemestersByYearAndSemester().size();
 			
 			for(int i=1; i<numOfsemester+1;i++) {
-				String laststring =  laststudent + ","+ numOfsemester +","+ i+","+ newStudent.getNumCourseInNthSementer(i);
-				result.add(laststring);
+				if((Integer.parseInt(startyear)<=newStudent.getfindSemester(i))&&(newStudent.getfindSemester(i)<= Integer.parseInt(endyear))) {
+					String laststring =  laststudent + ","+ numOfsemester +","+ i+","+ newStudent.getNumCourseInNthSementer(i);
+					result.add(laststring);
+				}
 			}
 		}
 		
@@ -196,6 +231,86 @@ public class HGUCoursePatternAnalyzer {
 		return result; // do not forget to return a proper variable.
 	}
 	
+	//a2일 경우
+	private ArrayList<String> countNumberOfExactCourses(Map<String, Coursedate> sortedCourses, Map<String, Student> sortedStudents) {
+		
+		// TODO: Implement this method
+		ArrayList<String> result = new ArrayList<String>();
+
+		String coursename =null;
+		
+		result.add("Year,Semester,CouseCode, CourseName,TotalStudents,StudentsTaken,Rate");
+		
+		for(String lastCourse: sortedCourses.keySet()) {
+			Coursedate newCourse = sortedCourses.get(lastCourse);
+			//int numOfsemester = newCourse.getcourseTakendate().size();
+		
+			ArrayList<Student> studentTakenClass = new ArrayList<Student>();
+			if((Integer.parseInt(startyear)<= newCourse.yearTaken())&&(newCourse.yearTaken()<= Integer.parseInt(endyear))) {
+				//처음에 newCourse가 해당 년도에 맞는지
+				
+				//학기에 수업들을 들은 총 학생 수 찾기
+				for(String findStudent: sortedStudents.keySet()) {
+					Student newStudent = sortedStudents.get(findStudent);
+					for(String findsemester: newStudent.getSemestersByYearAndSemester().keySet()) {
+						String[] takenyear = findsemester.split("-");
+						if((Integer.parseInt(takenyear[0])==newCourse.yearTaken()) && (Integer.parseInt(takenyear[1])==newCourse.semesterTaken())) {
+							studentTakenClass.add(newStudent);
+						}
+					}
+				}//총학생수 끝
+				
+				int count = 0;
+				
+				//해당 학기에 해당 수업을 들은 학생 수 찾기
+				for(Student classStudent: studentTakenClass) {
+					for(Course takencourse : classStudent.getcoursesTaken()) {
+						if(takencourse.getcourseCode().equals(coursecode)&& takencourse.getyearTaken()==newCourse.yearTaken()
+								&& takencourse.getsemesterCourseTaken()==newCourse.semesterTaken()) {
+							count++;
+							coursename=takencourse.getcourseName();
+						}
+					}
+					
+				}
+				
+				if((count!=0)) {
+					String laststring = newCourse.yearTaken()+","+newCourse.semesterTaken()+","+coursecode+","+ coursename+
+							","+ studentTakenClass.size()+","+count+","+String.format("%.1f",((float)count/studentTakenClass.size())*100 - 0.05)+"%";
+					System.out.println(laststring);
+					result.add(laststring);
+				}
+						
+				
+				
+			}
+		}
+			
+			
+			
+			
+			
+			
+// 이건 실수 과목수로 구하는줄 알았음			
+//			for(int i=1; i<numOfsemester+1;i++) {
+//				if((Integer.parseInt(startyear)<= newCourse.yearTaken())&&(newCourse.yearTaken()<= Integer.parseInt(endyear))) {
+//					for(Course lastcourse : newCourse.getcourseTakendate()) {
+//						if(lastcourse.getcourseCode().equals(coursecode)){
+//							count++;
+//							coursename=lastcourse.getcourseName();
+//						}
+//					}
+//				}
+//			}
+//			float Rate = count/numOfsemester;
+//			String laststring = newCourse.yearTaken()+","+newCourse.semesterTaken()+","+coursecode+
+//					","+ numOfsemester+","+count+","+String.format("%.2f",Rate)+"%";
+//			result.add(laststring);
+//		}
+		
+		
+		return result; // do not forget to return a proper variable.
+	}
 	private boolean parseOptions(Options options, String[] args) {
 		CommandLineParser parser = new DefaultParser();
 

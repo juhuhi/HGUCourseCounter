@@ -1,6 +1,9 @@
 package edu.handong.analysis.datamodel;
 
+import java.util.ArrayList;
+
 public class Course {
+	private ArrayList<Course> coursesTaken;
 	private String studentId;
 	private String yearMonthGraduated;
 	private String firstMajor;
@@ -23,4 +26,18 @@ public class Course {
 		semesterCourseTaken= Integer.parseInt(array[8].trim());
 	}
 	
+	public String getcourseCode(){
+		return courseCode;
+	}
+	
+	public int getyearTaken(){
+		return yearTaken;
+	}
+	public String getcourseName(){
+		return courseName;
+	}
+	public int getsemesterCourseTaken(){
+		return semesterCourseTaken;
+	}
+
 }

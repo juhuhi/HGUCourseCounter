@@ -17,5 +17,25 @@ public class Coursedate {
    public void addCourse(Course newRecord) {
       this.courseTakendate.add(newRecord);
    }
+   
+	public ArrayList<Course> getcourseTakendate(){
+		return courseTakendate;
+	}
+	
+   
+   public int yearTaken() {
+	   String yearTaken[]=date.split("-");
+	   return Integer.parseInt(yearTaken[0].trim());
+   }
+   
+   
+   public int semesterTaken() {
+	   String semesterTaken[]=date.split("-");
+	   return Integer.parseInt(semesterTaken[1].trim());
+   }
+   
+   
+
+   
 
 }
