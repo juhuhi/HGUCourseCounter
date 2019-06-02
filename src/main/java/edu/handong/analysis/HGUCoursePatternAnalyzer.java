@@ -277,7 +277,7 @@ public class HGUCoursePatternAnalyzer {
 				
 					String laststring = newCourse.yearTaken()+","+newCourse.semesterTaken()+","+coursecode+","+ coursename+
 							","+ studentTakenClass.size()+","+count+","+String.format("%.1f",((float)count/studentTakenClass.size())*100)+"%";
-					System.out.println(laststring);
+					//System.out.println(laststring);
 					result.add(laststring);
 				
 						

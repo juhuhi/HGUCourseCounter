@@ -71,7 +71,7 @@ public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 	            writer.write("\n");
 	            writer.flush();
 			 }
-			 System.out.println("done");
+			 //System.out.println("done");
 			
 		} catch(IOException e) {
             e.printStackTrace();
