@@ -10,7 +10,7 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
 }
-apply pulgin: 'application'
+apply plugin: 'application'
 mainClassName = "edu.handong.analysis.Main"
 
 repositories {
