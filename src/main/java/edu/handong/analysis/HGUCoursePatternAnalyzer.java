@@ -241,6 +241,20 @@ public class HGUCoursePatternAnalyzer {
 		
 		result.add("Year,Semester,CouseCode, CourseName,TotalStudents,StudentsTaken,Rate");
 		
+		
+		
+		//coursename 찾기
+		for(String findCourse: sortedCourses.keySet()) {
+			Coursedate findCoursename = sortedCourses.get(findCourse);
+			for(Course reallyfindCoursename : findCoursename.getcourseTakendate()) {
+				if(reallyfindCoursename.getcourseCode().equals(coursecode)) {
+			
+					coursename=reallyfindCoursename.getcourseName();
+					break;
+				}
+			}
+		}
+		//전체for문
 		for(String lastCourse: sortedCourses.keySet()) {
 			Coursedate newCourse = sortedCourses.get(lastCourse);
 			//int numOfsemester = newCourse.getcourseTakendate().size();
@@ -268,7 +282,7 @@ public class HGUCoursePatternAnalyzer {
 						if(takencourse.getcourseCode().equals(coursecode)&& takencourse.getyearTaken()==newCourse.yearTaken()
 								&& takencourse.getsemesterCourseTaken()==newCourse.semesterTaken()) {
 							count++;
-							coursename=takencourse.getcourseName();
+							//coursename=takencourse.getcourseName();
 						}
 					}
 					
