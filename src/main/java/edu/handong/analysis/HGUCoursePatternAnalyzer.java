@@ -274,12 +274,12 @@ public class HGUCoursePatternAnalyzer {
 					
 				}
 				
-				if((count!=0)) {
+				
 					String laststring = newCourse.yearTaken()+","+newCourse.semesterTaken()+","+coursecode+","+ coursename+
-							","+ studentTakenClass.size()+","+count+","+String.format("%.1f",((float)count/studentTakenClass.size())*100 - 0.05)+"%";
+							","+ studentTakenClass.size()+","+count+","+String.format("%.1f",((float)count/studentTakenClass.size())*100)+"%";
 					System.out.println(laststring);
 					result.add(laststring);
-				}
+				
 						
 				
 				
