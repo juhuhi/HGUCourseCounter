@@ -390,7 +390,7 @@ public class HGUCoursePatternAnalyzer {
 				.build());
 		
 		options.addOption(Option.builder("e").longOpt("endyear")
-				.desc("Set the end year for analysis e.g., -e 2005 ")
+				.desc("Set the end year for analysis e.g., -e 2005")
 				.hasArg()
 				.argName("End year for analysis")
 				.required()
@@ -399,7 +399,8 @@ public class HGUCoursePatternAnalyzer {
 		
 		// add options by using OptionBuilder
 		options.addOption(Option.builder("h").longOpt("help")
-		        .desc("Help")
+		        .desc("Show a Help page")
+		        .argName("Help")
 		        .build());
 		
 
